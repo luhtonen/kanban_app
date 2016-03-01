@@ -13,7 +13,8 @@ const TARGET = process.env.npm_lifecycle_event;
 const PATHS = {
   app: path.join(__dirname, 'app'),
   build: path.join(__dirname, 'build'),
-  style: path.join(__dirname, 'app/main.css')
+  style: path.join(__dirname, 'app/main.css'),
+  test: path.join(__dirname, 'tests')
 };
 
 process.env.BABEL_ENV = TARGET;
@@ -62,6 +63,9 @@ const common = {
 // Default configuration
 if (TARGET === 'start' || !TARGET) {
   module.exports = merge(common, {
+    entry: {
+      style: PATHS.style
+    },
     devtool: 'eval-source-map',
     devServer: {
       // Enable history API fallback so HTML5 History API based routing works.
@@ -108,7 +112,8 @@ if (TARGET === 'build' || TARGET === 'stats') {
         // Exclude alt-utils as it won't work with this setup due to the way the package has
         // been designed (no package.json main).
         return v !== 'alt-utils';
-      })
+      }),
+      style: PATHS.style
     },
     output: {
       path: PATHS.build,
@@ -145,5 +150,29 @@ if (TARGET === 'build' || TARGET === 'stats') {
         }
       })
     ]
+  });
+}
+
+if (TARGET === 'test' || TARGET === 'tdd') {
+  module.exports = merge(common, {
+    devtool: 'inline-source-map',
+    resolve: {
+      alias: {
+        'app': PATHS.app
+      }
+    },
+    module: {
+      preLoaders: [
+        {
+          test: /\.jsx?$/,
+          loaders: ['isparta-instrumenter'],
+          include: PATHS.app
+        }],
+      loaders: [{
+        test: /\.jsx?$/,
+        loaders: ['babel?cacheDirectory'],
+        include: PATHS.test
+      }]
+    }
   });
 }
