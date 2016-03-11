@@ -1,7 +1,21 @@
+/* @flow */
 import React from 'react';
 
-class Editable extends React.Component {
-  render() {
+export default class Editable extends React.Component {
+  static props:{
+    value?: string,
+    editing?: boolean,
+    onEdit?: Function,
+    onDelete?: Function,
+    onValueClick?: Function
+  };
+  static defaultProps: {
+    value: '',
+    editing: false,
+    onEdit: () => {}
+  };
+
+  render(): Object {
     const {value, onEdit, onValueClick, editing, ...props} = this.props;
 
     return (
@@ -11,7 +25,7 @@ class Editable extends React.Component {
     );
   }
 
-  renderEdit = () => {
+  renderEdit: () => Object = () => {
     return <input type="text"
                   ref={
                     (e) => e ? e.selectionStart = this.props.value.length : null
@@ -22,7 +36,7 @@ class Editable extends React.Component {
                   onKeyPress={this.checkEnter}/>;
   };
 
-  renderValue = () => {
+  renderValue: () => Object = () => {
     const onDelete = this.props.onDelete;
 
     return (
@@ -33,22 +47,19 @@ class Editable extends React.Component {
     );
   };
 
-  renderDelete = () => {
+  renderDelete: () => Object = () => {
     return <button
       className="delete"
       onClick={this.props.onDelete}>x</button>;
   };
 
-  checkEnter = (e) => {
+  checkEnter: (e: Object) => void = (e) => {
     if (e.key === 'Enter') {
       this.finishEdit(e);
     }
   };
 
-  finishEdit = (e) => {
+  finishEdit: (e: Object) => void = (e) => {
     this.props.onEdit(e.target.value);
   };
 }
-Editable.propTypes = {};
-
-export default Editable;
