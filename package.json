@@ -10,7 +10,8 @@
     "start": "webpack-dev-server",
     "test": "karma start",
     "tdd": "karma start --auto-watch --no-single-run",
-    "flow": "flow check"
+    "flow": "flow check",
+    "lint": "eslint . --ext .js --ext .jsx"
   },
   "keywords": [
     "javascript",
@@ -22,6 +23,7 @@
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.5.2",
+    "babel-eslint": "^5.0.0",
     "babel-loader": "^6.2.3",
     "babel-plugin-typecheck": "^3.8.0",
     "babel-preset-es2015": "^6.5.0",
@@ -30,6 +32,8 @@
     "babel-preset-survivejs-kanban": "^0.3.3",
     "clean-webpack-plugin": "^0.1.8",
     "css-loader": "^0.23.1",
+    "eslint": "^2.3.0",
+    "eslint-plugin-react": "^4.2.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "gh-pages": "^0.10.0",
     "html-webpack-plugin": "^2.9.0",
